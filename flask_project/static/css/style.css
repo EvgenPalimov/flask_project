@@ -426,6 +426,26 @@ a:hover figcaption { color: #056767; }
 .tm-contact-form label { font-size: 1.4rem; }
 .tm-contact-form .form-group { display: flex; }
 
+.menu_bar {
+    background-color: #0CC;
+    height: 100px;
+    padding-left: calc(50% - 550px);
+    padding-right: calc(50% - 550px);
+    display: flex;
+    justify-content: right;
+    align-items: center;
+}
+
+.menu_link {
+    padding: 0 20px;
+    color: white;
+    font-size: 23px;
+}
+
+.content-section {
+   max-width: 980px;
+}
+
 @media (max-width: 1540px) {
     .tm-header { width: 320px; }
 
