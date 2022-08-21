@@ -16,8 +16,7 @@ def register():
         return redirect(url_for('main.index'))
     form = RegistrationForm()
     if form.validate_on_submit():
-        hashed_password = bcrypt. \
-            generate_password_hash(form.password.data).decode('utf-8')
+        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
         user = User(username=form.username.data,
                     email=form.email.data,
                     password=hashed_password)
@@ -68,8 +67,13 @@ def account():
         posts = Post.query.filter_by(author=user) \
             .order_by(Post.date_posted.desc()) \
             .paginate(page=page, per_page=5)
-        image_file = url_for('static', filename='profile_avatar/'
+        if user.image_file:
+            image_file = url_for('static', filename='profile_avatar/'
                                                 + current_user.image_file)
+        else:
+            image_file = url_for('static',
+                                 filename='profile_avatar/default.png')
+
         return render_template('account.html', title='Account',
                                image_file=image_file, form=form,
                                posts=posts, user=user)

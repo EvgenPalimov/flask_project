@@ -446,6 +446,10 @@ a:hover figcaption { color: #056767; }
    max-width: 980px;
 }
 
+.box-check {
+    margin-top: 13px;
+}
+
 @media (max-width: 1540px) {
     .tm-header { width: 320px; }
 

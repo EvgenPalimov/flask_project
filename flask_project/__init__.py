@@ -13,8 +13,10 @@ bcrypt = Bcrypt()
 def create_app():
     """Start project to Flask."""
 
-    print(__name__)
     app = Flask(__name__)
+    app.config.from_object(Config)
+
+    db.init_app(app)
     login_manager.init_app(app)
     bcrypt.init_app(app)
 
@@ -22,7 +24,5 @@ def create_app():
     from flask_project.users.routes import users
     app.register_blueprint(main)
     app.register_blueprint(users)
-
-    app.config.from_object(Config)
 
     return app
