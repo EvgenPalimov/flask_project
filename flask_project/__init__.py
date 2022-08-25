@@ -22,7 +22,9 @@ def create_app():
 
     from flask_project.main.routes import main
     from flask_project.users.routes import users
+    from flask_project.posts.routes import posts
     app.register_blueprint(main)
+    app.register_blueprint(posts)
     app.register_blueprint(users)
 
     return app

@@ -16,7 +16,8 @@ def register():
         return redirect(url_for('main.index'))
     form = RegistrationForm()
     if form.validate_on_submit():
-        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        hashed_password = bcrypt.generate_password_hash(
+            form.password.data).decode('utf-8')
         user = User(username=form.username.data,
                     email=form.email.data,
                     password=hashed_password)
@@ -38,7 +39,9 @@ def login():
         if user and bcrypt.check_password_hash(user.password,
                                                form.password.data):
             login_user(user, remember=form.remember.data)
-            return redirect(url_for('main.index'))
+            next_page = request.args.get('next')
+            return redirect(next_page) if next_page else \
+                redirect(url_for('main.index'))
         else:
             flash('Login failed. Please check your email and password.',
                   'attention')
@@ -53,11 +56,11 @@ def account():
         if form.avatar.data:
             avatar_file = save_avatar(form.avatar.data)
             current_user.image_file = avatar_file
-            current_user.username = form.username.data
-            current_user.email = form.email.data
-            db.session.commit()
-            flash('Your account has been updated!', 'success')
-            return redirect(url_for('users.account'))
+        current_user.username = form.username.data
+        current_user.email = form.email.data
+        db.session.commit()
+        flash('Your account has been updated!', 'success')
+        return redirect(url_for('users.account'))
     elif request.method == 'GET':
         form.username.data = current_user.username
         form.email.data = current_user.email
@@ -69,7 +72,7 @@ def account():
             .paginate(page=page, per_page=5)
         if user.image_file:
             image_file = url_for('static', filename='profile_avatar/'
-                                                + current_user.image_file)
+                                                    + current_user.image_file)
         else:
             image_file = url_for('static',
                                  filename='profile_avatar/default.png')
@@ -83,3 +86,12 @@ def account():
 def logout():
     logout_user()
     return redirect(url_for('main.index'))
+
+@users.route('/user/<string:username>')
+def user_posts(username):
+    page = request.args.get('page', 1, type=int)
+    user = User.query.filter_by(username=username).first_or_404()
+    posts = Post.query.filter_by(author=user).\
+        order_by(Post.date_posted.desc()).\
+        paginate(page=page, per_page=5)
+    return render_template('user_posts.html', posts=posts, user=user)

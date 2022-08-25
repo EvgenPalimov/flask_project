@@ -3,11 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% if title %}
-    <title>Academy-GB Blog - {{ title }}</title>
-    {% else %}
     <title>Academy-GB Blog</title>
-    {% endif %}
     <link rel="stylesheet"
           href="{{ url_for('static', filename='fontawesome/css/all.min.css') }}">
     <!-- https://fontawesome.com/ -->
@@ -32,26 +28,33 @@
         </div>
         <nav class="tm-nav" id="tm-nav">
             <ul>
-                <li class="tm-nav-item"><a href="/"
+                <li class="tm-nav-item">
+                    <a href="/" class="tm-nav-link">
+                        <i class="fas fa-home"></i>
+                        Blog Home
+                    </a>
+                </li>
+                <li class="tm-nav-item">
+                    {% if current_user.is_authenticated %}
+                    <a href="{{ url_for('posts.user_posts', user_id=current_user.id) }}"
                                            class="tm-nav-link">
-                    <i class="fas fa-home"></i>
-                    Blog Home
-                </a></li>
-                <li class="tm-nav-item"><a href="/post"
-                                           class="tm-nav-link">
-                    <i class="fas fa-pen"></i>
-                    Single Post
-                </a></li>
-                <li class="tm-nav-item"><a href="/about"
-                                           class="tm-nav-link">
-                    <i class="fas fa-users"></i>
-                    About Academy-GB Blog
-                </a></li>
-                <li class="tm-nav-item"><a href="/contact"
-                                           class="tm-nav-link">
-                    <i class="far fa-comments"></i>
-                    Contact Us
-                </a></li>
+                        <i class="fas fa-pen"></i>
+                        My Post
+                    </a>
+                    {% endif %}
+                </li>
+                <li class="tm-nav-item">
+                    <a href="/about" class="tm-nav-link">
+                        <i class="fas fa-users"></i>
+                        About Academy-GB Blog
+                    </a>
+                </li>
+                <li class="tm-nav-item">
+                    <a href="/contact" class="tm-nav-link">
+                        <i class="far fa-comments"></i>
+                        Contact Us
+                    </a>
+                </li>
             </ul>
         </nav>
         <div class="tm-mb-65">
@@ -81,8 +84,10 @@
     <!-- Navbar Right Side -->
     <div class="menu_bar">
         {% if current_user.is_authenticated %}
+            <a class="menu_link" href="{{ url_for('posts.new_post') }}">
+                <i class="fa fa-plus icon-left"></i>Новый пост</a>
             <a class="menu_link" href="{{url_for('users.account') }}">
-                <i class="fa fa-user" style="padding-right: 5px;"></i>
+                <i class="fa fa-user icon-left" style=""></i>
                 Profile
             </a>
             <a class="menu_link" href="{{ url_for('users.logout') }}"><i
@@ -120,5 +125,7 @@
 <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/menu-active.js') }}"></script>
 <script src="{{ url_for('static', filename='js/templatemo-script.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
 </html>
