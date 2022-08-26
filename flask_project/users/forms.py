@@ -16,6 +16,8 @@ class RegistrationForm(FlaskForm):
     confirm_password = PasswordField('Confirm password',
                                      validators=[DataRequired(),
                                                  EqualTo('password')])
+    avatar = FileField('Add your profile photo.',
+                       validators=[FileAllowed(['jpg', 'png'])])
     submit = SubmitField('Register')
 
     def validate_username(self, username):
@@ -50,7 +52,7 @@ class UpdateAccountForm(FlaskForm):
 
     def validate_username(self, username):
         if username.data != current_user.username:
-            user = User.query.filter_by(usrename=username.data).first()
+            user = User.query.filter_by(username=username.data).first()
             if user:
                 raise ValidationError(
                     'This name is taken. Please choose another one.'

@@ -5,13 +5,8 @@
   <article class="col-12 col-md-6">
       <hr class="tm-hr-primary">
               <div>
-                  {% if post.image_file %}
-                      <img src="{{ url_for('static', filename='img/posts_image/' + post.image_file) }}"
-                           alt="Image" class="img-fluid">
-                  {% else %}
-                      <img src="{{ url_for('static', filename='img/posts_image/default.jpg') }}"
-                           alt="Image" class="img-fluid">
-                  {% endif %}
+                  <img src="{{ url_for('static', filename='img/posts_image/' + post.image_file) }}"
+                       alt="Image" class="img-fluid">
               </div>
                   <!-- Flag - new posts. -->
                   {% if (datetime.datetime.utcnow() - post.date_posted)

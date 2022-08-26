@@ -37,11 +37,11 @@ def new_post():
         if form.image_file.data:
             image_file = save_image(form.image_file.data)
             post = Post(title=form.title.data, content=form.content.data,
-                        user_id=current_user.user, image_file=image_file)
+                        user_id=current_user.id, image_file=image_file)
             db.session.add(post)
         else:
             post = Post(title=form.title.data, content=form.content.data,
-                        user_id=current_user.id)
+                        user_id=current_user.id, image_file='default.jpg')
             db.session.add(post)
         db.session.commit()
         flash('Your post has been created!', 'success')
