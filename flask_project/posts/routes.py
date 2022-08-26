@@ -19,11 +19,12 @@ def allpost():
         paginate(page=page, per_page=4)
     return render_template('index.html', posts=posts, datetime=datetime)
 
+
 @posts.route('/posts/user/<int:user_id>')
 @login_required
 def user_posts(user_id):
     page = request.args.get('page', 1, type=int)
-    posts = Post.query.filter(Post.user_id == user_id).\
+    posts = Post.query.filter(Post.user_id == user_id). \
         order_by(Post.date_posted.desc()).paginate(page=page, per_page=4)
     return render_template('user_posts.html', posts=posts, datetime=datetime)
 
@@ -76,10 +77,10 @@ def update_post(post_id):
         form.content.data = post.content
         if post.image_file:
             image_file = url_for('static', filename='img/posts_image/'
-                                                         + post.image_file)
+                                                    + post.image_file)
         else:
             image_file = url_for('static',
-                                      filename='img/posts_image/default.png')
+                                 filename='img/posts_image/default.png')
 
         return render_template('create_post.html', title='Update of post.',
                                form=form, legend='Update of post.',

@@ -31,7 +31,7 @@ def register():
 @users.route("/login", methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('main.index'))
+        return redirect(url_for('posts.allpost'))
 
     form = LoginForm()
     if form.validate_on_submit():
@@ -41,7 +41,7 @@ def login():
             login_user(user, remember=form.remember.data)
             next_page = request.args.get('next')
             return redirect(next_page) if next_page else \
-                redirect(url_for('main.index'))
+                redirect(url_for('posts.allpost'))
         else:
             flash('Login failed. Please check your email and password.',
                   'attention')
@@ -65,8 +65,7 @@ def account():
         form.username.data = current_user.username
         form.email.data = current_user.email
         page = request.args.get('page', 1, type=int)
-        user = User.query.filter_by(username=
-                                    form.username.data).first_or_404()
+        user = User.query.filter_by(username=form.username.data).first_or_404()
         posts = Post.query.filter_by(author=user) \
             .order_by(Post.date_posted.desc()) \
             .paginate(page=page, per_page=5)
@@ -85,13 +84,4 @@ def account():
 @users.route("/logout")
 def logout():
     logout_user()
-    return redirect(url_for('main.index'))
-
-@users.route('/user/<string:username>')
-def user_posts(username):
-    page = request.args.get('page', 1, type=int)
-    user = User.query.filter_by(username=username).first_or_404()
-    posts = Post.query.filter_by(author=user).\
-        order_by(Post.date_posted.desc()).\
-        paginate(page=page, per_page=5)
-    return render_template('user_posts.html', posts=posts, user=user)
+    return redirect(url_for('posts.allpost'))

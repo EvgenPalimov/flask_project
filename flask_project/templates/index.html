@@ -44,7 +44,7 @@
             </p>
             <div class="d-flex justify-content-between tm-pt-45">
 
-                    <a href="{{ url_for('posts.user_posts', user_id=current_user.id) }}"
+                    <a href="{{ url_for('posts.user_posts', user_id=post.author.id) }}"
                        class="tm-color-primary">
                         Author post - {{ post.author.username }}.
                     </a>
