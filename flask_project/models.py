@@ -1,4 +1,8 @@
 from datetime import datetime
+
+from flask import current_app
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+
 from flask_project import db, login_manager
 from flask_login import UserMixin
 
@@ -19,6 +23,18 @@ class User(db.Model, UserMixin):
     def __repr__(self):
         return f"User('{self.username}', '{self.email}', '{self.image_file}')"
 
+    def get_reset_token(self, expires_sec=1800):
+        s = Serializer(current_app.config['SECRET_KEY'], expires_sec)
+        return s.dumps({'user_id': self.id}).decode('utf-8')
+
+    @staticmethod
+    def verify_reset_token(token):
+        s = Serializer(current_app.config['SECRET_KEY'])
+        try:
+            user_id = s.loads(token)['user_id']
+        except Exception:
+            return None
+        return User.query.get(user_id)
 
 class Post(db.Model):
     """Class Post - to create an object Post in the database."""
