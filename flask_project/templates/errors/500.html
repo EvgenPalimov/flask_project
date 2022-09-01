@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="mainbox">
+    <div class="err">5</div>
+        <i class="far fa-question-circle fa-spin"></i>
+    <div class="err2">0</div>
+    <div class="msg">
+        The server went to rest a bit. We are waiting for you a little later.
+        <p>
+            Let's go <a class="err_link" href="{{ url_for('posts.allpost') }}">home</a> and try from there.
+        </p>
+    </div>
+</div>
+{% endblock content %}
