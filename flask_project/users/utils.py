@@ -1,7 +1,7 @@
 import os
 from secrets import token_hex
 
-from PIL import Image
+from PIL.Image import Image
 from flask import current_app, url_for
 from flask_mail import Message
 
